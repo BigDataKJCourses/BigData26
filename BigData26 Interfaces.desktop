@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=BigData26 Interfaces
+Comment=BigData26 Interfaces
+Exec=xdg-open /home/student/BigData26/'BigData26 Interfaces.html'
+Icon=/home/student/BigData26/favicon/web-app-manifest-192x192.png
+Terminal=false
+Categories=Development;Network;

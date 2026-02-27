@@ -1,0 +1,67 @@
+FROM apache/flink:2.2.0-java21
+
+USER root
+
+ENV TERM=xterm-256color
+
+# Naprawa repozytoriów i instalacja narzędzi
+RUN sed -i 's/deb.debian.org/ftp.debian.org/g' /etc/apt/sources.list.d/* || true && \
+    apt-get update --fix-missing && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    bash \
+    nano \
+    python3 \
+    python3-pip \
+    python3-dev \
+    gcc \
+    curl \
+    wget && \
+    rm -rf /var/lib/apt/lists/*
+
+# Linkowanie Pythona
+RUN ln -sf /usr/bin/python3 /usr/bin/python
+
+# Instalacja Flinka (Upewnij się, że wersja PyPI 2.2.0 jest już dostępna, 
+# jeśli nie - użyj 1.20.0, która jest stabilna)
+RUN pip3 install --no-cache-dir apache-flink==2.2.0 --break-system-packages || \
+    pip3 install --no-cache-dir apache-flink==1.20.0 --break-system-packages
+
+# MinIO Client
+RUN curl -sSL https://dl.min.io/client/mc/release/linux-amd64/mc -o /usr/local/bin/mc && \
+    chmod +x /usr/local/bin/mc
+
+# --- S3 Support (Zwróć uwagę na wersję JAR!) ---
+RUN mkdir -p /opt/flink/plugins/s3-fs-presto && \
+    if [ -f /opt/flink/opt/flink-s3-fs-presto-2.2.0.jar ]; then \
+        cp /opt/flink/opt/flink-s3-fs-presto-2.2.0.jar /opt/flink/plugins/s3-fs-presto/; \
+    else \
+        cp /opt/flink/opt/flink-s3-fs-presto-*.jar /opt/flink/plugins/s3-fs-presto/; \
+    fi
+
+# --- Biblioteki  ---
+WORKDIR /opt/flink/lib
+
+# Kafka SQL Connector (Dopasowany do Flink 2.x)
+RUN wget https://repo1.maven.org/maven2/org/apache/flink/flink-sql-connector-kafka/4.0.1-2.0/flink-sql-connector-kafka-4.0.1-2.0.jar 
+
+# Flink Faker i Datafaker (Do generowania danych bez Kafki)
+RUN wget https://github.com/knaufk/flink-faker/releases/download/v0.5.3/flink-faker-0.5.3.jar && \
+    wget https://repo1.maven.org/maven2/net/datafaker/datafaker/1.9.0/datafaker-1.9.0.jar
+
+# JDBC i MySQL
+RUN wget https://repo1.maven.org/maven2/org/apache/flink/flink-connector-jdbc-core/4.0.0-2.0/flink-connector-jdbc-core-4.0.0-2.0.jar && \
+    wget https://repo1.maven.org/maven2/org/apache/flink/flink-connector-jdbc-mysql/4.0.0-2.0/flink-connector-jdbc-mysql-4.0.0-2.0.jar && \
+    wget https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.5.0/mysql-connector-j-9.5.0.jar
+
+# Kafka Connector i Klient oraz GSON
+RUN wget https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/4.1.1/kafka-clients-4.1.1.jar && \
+    wget https://repo1.maven.org/maven2/org/apache/flink/flink-connector-kafka/4.0.1-2.0/flink-connector-kafka-4.0.1-2.0.jar && \
+    wget https://repo1.maven.org/maven2/com/google/code/gson/gson/2.9.1/gson-2.9.1.jar
+
+RUN mkdir -p /opt/workspace && \
+    chown -R ubuntu:ubuntu /opt/flink /opt/workspace
+
+WORKDIR /opt/flink
+
+USER ubuntu

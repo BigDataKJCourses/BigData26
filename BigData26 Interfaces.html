@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigData26 - Big Data Engineering</title>
+    
+    <link rel="icon" type="image/png" href="/home/student/BigData26/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/home/student/BigData26/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/home/student/BigData26/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/home/student/BigData26/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/home/student/BigData26/favicon/site.webmanifest" />
+
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #38bdf8;
+        }
+
+        body { 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            background: var(--bg-color); 
+            margin: 0; 
+            padding: 40px 20px; 
+            color: var(--text-main); 
+            line-height: 1.6;
+        }
+
+        /* Wyśrodkowany Header */
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo-main {
+            width: 140px;
+            height: 140px;
+            border-radius: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .logo-main:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        h1 { 
+            color: var(--accent); 
+            margin: 0; 
+            font-size: 2.8em; 
+            text-transform: uppercase; 
+            letter-spacing: 3px;
+            font-weight: 800;
+        }
+
+        .subtitle { 
+            color: var(--text-dim); 
+            font-size: 1.2rem;
+            margin-top: 10px;
+            max-width: 600px;
+        }
+
+        .divider {
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        /* Grid i Karty */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); 
+            gap: 25px; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 16px; 
+            padding: 30px; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            border: 1px solid rgba(255,255,255,0.05);
+            border-top: 6px solid var(--accent); 
+            position: relative; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            background: #243147;
+        }
+
+        /* Kolorystyka systemów */
+        .card.flink { border-top-color: #E6522C; } 
+        .card.spark { border-top-color: #E25A1C; } 
+        .card.minio { border-top-color: #00BFFF; } 
+        .card.jupyter { border-top-color: #F37626; } 
+        .card.kafka { border-top-color: #27ae60; }
+        .card.ksql { border-top-color: #9b59b6; }
+        .card.mysql { border-top-color: #00758f; }
+
+        h2 { margin: 0 0 15px 0; font-size: 1.5em; display: flex; align-items: center; gap: 12px; }
+        p { color: var(--text-dim); font-size: 0.95em; flex-grow: 1; margin-bottom: 20px; }
+        
+        .port-tag { 
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            font-family: 'Cascadia Code', monospace; 
+            background: rgba(15, 23, 42, 0.6); 
+            color: var(--accent); 
+            padding: 4px 10px; 
+            border-radius: 6px; 
+            font-size: 0.8em;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .btn-group { display: flex; gap: 12px; flex-wrap: wrap; }
+        .btn { 
+            flex: 1; 
+            text-align: center; 
+            background: var(--accent); 
+            color: #0f172a; 
+            text-decoration: none; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            font-size: 0.9em; 
+            transition: all 0.2s;
+        }
+        .btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+        .btn-secondary { background: #475569; color: white; }
+
+        .card.offline { opacity: 0.6; filter: grayscale(0.5); }
+        
+        footer {
+            text-align: center; 
+            margin-top: 80px; 
+            color: var(--text-dim); 
+            font-size: 0.9em; 
+            border-top: 1px solid #1e293b; 
+            padding-top: 30px;
+        }
+        .status-online { color: #22c55e; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="/home/student/BigData26/favicon/web-app-manifest-512x512.png" alt="BigData26 Logo" class="logo-main">
+        <div class="title-group">
+            <h1>BigData26 Interfaces</h1>
+            <div class="divider"></div>
+            <p class="subtitle">Zintegrowane Środowisko Przetwarzania Danych Big Data</p>
+        </div>
+    </header>
+
+    <div class="grid">
+        <div class="card jupyter" id="card-jupyter">
+            <span class="port-tag">8888</span>
+            <h2>📓 JupyterLab</h2>
+            <p>Interaktywne środowisko programistyczne. Twórz skrypty PySpark, prototypuj potoki danych i zarządzaj bibliotekami.</p>
+            <div class="btn-group">
+                <a href="http://localhost:8888" target="_blank" class="btn" style="background: #F37626; color: white;">Uruchom Workspace</a>
+            </div>
+        </div>
+
+        <div class="card kafka" id="card-kafka">
+            <span class="port-tag">8085</span>
+            <h2>📡 Kafka Cluster</h2>
+            <p>Podgląd klastra KRaft. Zarządzaj tematami, monitoruj grupy konsumentów i śledź przepływ komunikatów.</p>
+            <div class="btn-group">
+                <a href="http://localhost:8085" target="_blank" class="btn" style="background: #27ae60; color: white;">Kafka Dashboard</a>
+            </div>
+        </div>
+
+        <div class="card ksql" id="card-ksql">
+            <span class="port-tag">8088</span>
+            <h2>🛠️ ksqlDB Engine</h2>
+            <p>Przetwarzanie strumieniowe przy użyciu SQL. Twórz widoki zmaterializowane bezpośrednio na tematach Kafki.</p>
+            <div class="btn-group">
+                <a href="http://localhost:8085/ui/clusters/lab-cluster/ksqldb/tables" target="_blank" class="btn" style="background: #9b59b6; color: white;">Konsola KSQL</a>
+            </div>
+        </div>
+
+        <div class="card flink" id="card-flink">
+            <span class="port-tag">8081</span>
+            <h2>🌊 Apache Flink</h2>
+            <p>Silnik Stateful Stream Processing. Monitoruj grafy zadań (DAG) i zarządzaj wydajnością TaskManagerów.</p>
+            <div class="btn-group">
+                <a href="http://localhost:8081" target="_blank" class="btn" style="background: #E6522C; color: white;">Flink Manager</a>
+            </div>
+        </div>
+
+        <div class="card spark" id="card-spark">
+            <span class="port-tag">8080 / 4040</span>
+            <h2>⚡ Apache Spark</h2>
+            <p>Zarządzanie klastrem Spark. Monitoruj status Mastera i Workerów oraz statystyki aktywnych zadań.</p>
+            <div class="btn-group">
+                <a href="http://localhost:8080" target="_blank" class="btn" style="background: #E25A1C; color: white;">Cluster Master</a>
+                <a href="http://localhost:4040" target="_blank" class="btn btn-secondary">Driver UI</a>
+            </div>
+        </div>
+
+        <div class="card spark" id="card-history">
+            <span class="port-tag">18080</span>
+            <h2>⚡ Spark History</h2>
+            <p>Archiwum zakończonych aplikacji. Analizuj plany wykonania zapytań SQL oraz historyczne zużycie zasobów.</p>
+            <div class="btn-group">
+                <a href="http://localhost:18080" target="_blank" class="btn" style="background: #E25A1C; color: white;">History Server</a>
+            </div>
+        </div>
+
+        <div class="card minio" id="card-minio">
+            <span class="port-tag">9001</span>
+            <h2>📦 MinIO Storage</h2>
+            <p>Lokalne repozytorium S3. Przechowuj checkpointy, dane Landing Zone oraz wyniki w formacie Parquet.</p>
+            <div class="btn-group">
+                <a href="http://localhost:9001" target="_blank" class="btn" style="background: #00BFFF; color: white;">Przeglądarka S3</a>
+            </div>
+        </div>
+
+        <div class="card mysql">
+            <span class="port-tag">3306</span>
+            <h2>🗄️ MySQL DB</h2>
+            <p>Relacyjna baza danych dla metadanych. Dostępna dla Sparka i Flinka jako źródło/ujście danych przez JDBC.</p>
+            <div class="btn-group">
+                <span class="btn btn-secondary">Host: localhost:3306</span>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Status: <span class="status-online">● Systemy Operacyjne Online</span> | 
+        Środowisko: <strong>BigData26 Stack</strong> | 
+        Rok: 2026
+    </footer>
+
+    <script>
+        const services = [
+            { id: 'card-jupyter', url: 'http://localhost:8888' },
+            { id: 'card-kafka', url: 'http://localhost:8085' },
+            { id: 'card-flink', url: 'http://localhost:8081' },
+            { id: 'card-spark', url: 'http://localhost:8080' },
+            { id: 'card-history', url: 'http://localhost:18080' },
+            { id: 'card-minio', url: 'http://localhost:9001' }
+        ];
+
+        async function checkStatus(service) {
+            const card = document.getElementById(service.id);
+            if (!card) return;
+            
+            try {
+                // Wykorzystujemy fetch z mode 'no-cors' do sprawdzenia czy port odpowiada
+                await fetch(service.url, { mode: 'no-cors' });
+                card.classList.remove('offline');
+            } catch (e) {
+                card.classList.add('offline');
+            }
+        }
+
+        // Początkowe sprawdzenie i interwał
+        services.forEach(checkStatus);
+        setInterval(() => services.forEach(checkStatus), 10000);
+    </script>
+</body>
+</html>
