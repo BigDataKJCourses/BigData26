@@ -144,6 +144,7 @@ docker compose --profile jupyter --profile flink --profile spark --profile kafka
 ```
 
 **B. Full Reset (Delete Everything)**
+
 The `down -v` command removes the containers along with all their volumes (databases, Kafka topics, MinIO files). When you run the environment again, it will be completely fresh.
 
 *Note: Only the `shared_workspace` directory on your physical disk and corresponding docker volumes remains unchanged.*
