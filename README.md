@@ -73,12 +73,20 @@ docker compose --profile jupyter --profile flink --profile spark --profile kafka
 up -d --scale flink-taskmanager=2 --scale spark-worker=2 
 ```
 
+<center>
+    <img src="img/image001.png" width="300">
+</center>
+
 The image build process may take a few moments depending on your resources. Please wait...
 
 Verify the status of the running containers.
 ```sh
 docker compose ps --format "table {{.Name}}\t{{.Service}}\t{{.Status}}\t{{.State}}"
 ```
+
+<center>
+    <img src="img/image002.png" width="500">
+</center>
 
 ### 5. Post-launch configuration
 
@@ -143,6 +151,10 @@ The `stop` command shuts down all containers but preserves their internal state 
 docker compose --profile jupyter --profile flink --profile spark --profile kafka stop
 ```
 
+<center>
+    <img src="img/image023.png" width="500">
+</center>
+
 **B. Full Reset (Delete Everything)**
 
 The `down -v` command removes the containers along with all their volumes (databases, Kafka topics, MinIO files). When you run the environment again, it will be completely fresh.
@@ -152,3 +164,7 @@ The `down -v` command removes the containers along with all their volumes (datab
 ```bash
 docker compose --profile jupyter --profile flink --profile spark --profile kafka down -v
 ```
+
+<center>
+    <img src="img/image024.png" width="500">
+</center>
