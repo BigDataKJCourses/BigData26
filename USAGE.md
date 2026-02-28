@@ -20,7 +20,7 @@ In Kafka, data is transmitted through "topics." Let's create a topic named `test
 ```
 
 <center>
-    <img src="img/image003.png" width="400">
+    <img src="img/image003.png" width="400" align="center">
 </center>
 
 3. **Start a Producer:**
@@ -40,7 +40,7 @@ To jest moja druga wiadomość.
 ```
 
 <center>
-    <img src="img/image004.png" width="400">
+    <img src="img/image004.png" width="400" align="center">
 </center>
 
 **(Do not close this "producer" terminal!)**
