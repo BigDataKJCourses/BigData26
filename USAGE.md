@@ -39,9 +39,9 @@ Witaj w BigData26!
 To jest moja druga wiadomość.
 ```
 
-<center>
+<div align="center">
     <img src="img/image004.png" width="400" align="center">
-</center>
+</div>
 
 **(Do not close this "producer" terminal!)**
 
@@ -55,9 +55,9 @@ docker compose exec -it kafka-1 /opt/kafka/bin/kafka-console-consumer.sh \
 --topic test-topic --from-beginning --bootstrap-server kafka-1:9092
 ```
 
-<center>
+<div align="center">
     <img src="img/image005.png" width="400">
-</center>
+</div>
 
 ## Kafka UI – Visualization
 Instead of using terminal commands, you can view the same data through your web browser.
@@ -65,17 +65,17 @@ Instead of using terminal commands, you can view the same data through your web 
 6. **Open the Kafka Dashboard:** 
    Open our environment's web interface control panel (`BigData26 Interfaces.html`) and click on **Kafka Dashboard**, or go directly to: [http://localhost:8085](http://localhost:8085)
 
-<center>
+<div align="center">
     <img src="img/image006.png" width="100">
     <img src="img/image007.png" width="200">
-</center>
+</div>
 
 7. **Browse Topics and Messages:**
    Go to the **Topics** tab in the left-hand menu and find `test-topic` in the list. Click on it, then select the **Messages** tab. You will see your messages there, along with information about the partition and the exact time they were recorded.
 
-<center>
+<div align="center">
     <img src="img/image008.png" width="700">
-</center>
+</div>
 
 ## ksqlDB – SQL for Data Streams
 
@@ -107,16 +107,16 @@ Go back to the "producer" terminal where the Producer is running and type a new 
 Do trzech razy sztuka
 ```
 
-<center>
+<div align="center">
     <img src="img/image009.png" width="400">
-</center>
+</div>
 
 12. **Verify results:**
 In the ksqlDB client terminal, the new message should appear instantly.
 
-<center>
+<div align="center">
     <img src="img/image010.png" width="300">
-</center>
+</div>
 
 13. **Cleanup:**
 Stop the ksqlDB client, Producer, and Consumer sessions by pressing `Ctrl+C`. You can exit the ksqlDB client by typing `exit`. The same command will allow you to exit the kafka-1 container session.
@@ -129,10 +129,10 @@ Stop the ksqlDB client, Producer, and Consumer sessions by pressing `Ctrl+C`. Yo
     Open our environment's web interface control panel and click on **MinIO Storage – S3 Browser**, or navigate directly to:
     [http://localhost:9001](http://localhost:9001)
 
-<center>
+<div align="center">
     <img src="img/image006.png" width="100">
     <img src="img/image011.png" width="200">
-</center>
+</div>
 
 15. **Log in to MinIO:**
     Log in to the MinIO web interface using the following credentials:
@@ -140,24 +140,24 @@ Stop the ksqlDB client, Producer, and Consumer sessions by pressing `Ctrl+C`. Yo
     * **Username:** `admin`
     * **Password:** `password`
 
-<center>
+<div align="center">
     <img src="img/image012.png" width="700">
-</center>
+</div>
 
 16. **Create a Bucket:**
     Create a "bucket," which functions as a directory within the distributed file system. Name it `lake-zone`. This can serve as a landing zone or destination for data processed by *Apache Spark* or *Apache Flink*.
 
-<center>
+<div align="center">
     <img src="img/image013.png" width="400">
-</center>
+</div>
 
 17. **Upload a File:**
     Enter the newly created `lake-zone` bucket. Select **Upload** -> **Upload File**. Choose any small file from your computer (e.g., the `docker-compose.yml` file from the `BigData26` directory).
     By doing this, you have manually placed a file into the MinIO service. It is physically stored within the Docker volume named `minio_data`.
 
-<center>
+<div align="center">
     <img src="img/image014.png" width="400">
-</center>
+</div>
 
 18. **Access MinIO via Command Line (mc):**
     You can also manage MinIO content using the `mc` (MinIO Client) tool. Run the following commands in a free terminal:
@@ -255,18 +255,18 @@ docker exec -it spark-master /opt/spark/bin/spark-submit \
 mc ls local/lake-zone/technologie.parquet
 ```
 
-<center>
+<div align="center">
     <img src="img/image015.png" width="500">
-</center>
+</div>
 
 26. **Monitor via Spark Web UI:**
     Open the control panel (web interface page) and click **Apache Spark – Cluster Master**, or go to: 
     [http://localhost:8080/](http://localhost:8080/)
     Identify the application you just executed in the *Completed Applications* list.
 
-<center>
+<div align="center">
     <img src="img/image016.png" width="500">
-</center>
+</div>
 
 27. **Interactive PySpark REPL:**
     Let's test the interactive PySpark environment. Launch `pyspark` on the `spark-master` container:
@@ -359,19 +359,19 @@ CREATE TABLE mysql_sink (
 INSERT INTO mysql_sink SELECT content FROM kafka_source;
 ```
 
-<center>
+<div align="center">
     <img src="img/image017.png" width="400">
-</center>
+</div>
 
 35. **Monitor via Flink Web UI:**
     Open the control panel and click **Apache Flink – Flink Manager**, or go directly to:
     [http://localhost:8081/](http://localhost:8081/)
     Select the running job to see the data flow metrics in real-time.
 
-<center>
+<div align="center">
     <img src="img/image018.png" width="500"><br>
     <img src="img/image019.png" width="500">
-</center>
+</div>
 
 36. **Test the End-to-End Pipeline:**
     Open an available terminal and restart the Kafka Producer:
@@ -387,9 +387,9 @@ docker compose exec -it kafka-1 /opt/kafka/bin/kafka-console-producer.sh \
 Wiadomość wysłana do MySQL przez Flinka!
 ```
 
-<center>
+<div align="center">
     <img src="img/image020.png" width="500">
-</center>
+</div>
 
 38. **Verify Data in MySQL:**
     Switch back to the terminal with your active MySQL session and check the table contents:
@@ -398,9 +398,9 @@ Wiadomość wysłana do MySQL przez Flinka!
 SELECT * FROM kafka_messages;
 ```
 
-<center>
+<div align="center">
     <img src="img/image021.png" width="400">
-</center>
+</div>
 
 *You should see your message there with an automatically generated timestamp.*
 
@@ -411,9 +411,9 @@ SELECT * FROM kafka_messages;
 
     **Note:** Exiting the SQL Client does not stop the background job. To stop the data flow, go to the **Flink Web UI** (http://localhost:8081/), select the running job, and click **Cancel Job**.
 
-<center>
+<div align="center">
     <img src="img/image022.png" width="500">
-</center>
+</div>
 
 ## Analytical Layer (User Interface)
 
