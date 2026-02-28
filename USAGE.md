@@ -369,8 +369,8 @@ INSERT INTO mysql_sink SELECT content FROM kafka_source;
     Select the running job to see the data flow metrics in real-time.
 
 <center>
-    <img src="img/image018.png" width="400"><br>
-    <img src="img/image019.png" width="400">
+    <img src="img/image018.png" width="500"><br>
+    <img src="img/image019.png" width="500">
 </center>
 
 36. **Test the End-to-End Pipeline:**
