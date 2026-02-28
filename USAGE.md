@@ -19,9 +19,9 @@ In Kafka, data is transmitted through "topics." Let's create a topic named `test
 --bootstrap-server kafka-1:9092 --replication-factor 3 --partitions 1
 ```
 
-<center>
+<div align="center">
     <img src="img/image003.png" width="400" align="center">
-</center>
+</div>
 
 3. **Start a Producer:**
 Now, we will turn this terminal into a "producer". Everything you type here will be sent to Kafka
