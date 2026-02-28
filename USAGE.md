@@ -205,11 +205,11 @@ CREATE TABLE kafka_messages (
 );
 ```
 
-### Compute Layer (Spark & Flink)
+## Compute Layer (Spark & Flink)
 
 Now we will use our two big data processing engines. **Apache Spark** will load sample data into a Parquet file directory, while **Apache Flink** will read data from a Kafka topic and write it to the MySQL relational database.
 
-#### Apache Spark
+### Apache Spark
 
 22. **Create a Spark Script:**
     Open *Visual Studio Code* and create a new file named `spark_to_minio.py` in the `BigData26/shared_workspace` directory.
