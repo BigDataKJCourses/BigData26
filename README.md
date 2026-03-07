@@ -62,7 +62,7 @@ Create additional folders used by Docker volumes within the `BigData26` director
 ```sh
 mkdir notebooks
 mkdir lib-shared
-mkdir shered_workspace
+mkdir shared_workspace
 ```
 
 ### 4. Start *BigData26*
