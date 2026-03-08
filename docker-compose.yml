@@ -217,7 +217,6 @@ services:
       - "8888:8888"
     environment:
       - JUPYTER_ENABLE_LAB=yes
-      - PYSPARK_PYTHON=python3
       - NB_UID=1000
       - NB_GID=1000
       - CHOWN_HOME=yes      
