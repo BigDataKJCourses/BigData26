@@ -3,7 +3,7 @@ services:
   kafka-1:
     image: apache/kafka:4.1.1
     container_name: kafka-1
-    profiles: ["kafka"]
+    profiles: ["kafka","spark","flink","all"]
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: 'broker,controller'
@@ -18,29 +18,28 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_MIN_IN_SYNC_REPLICAS: 2
-      KAFKA_CONTROLLER_QUORUM_ELECTION_TIMEOUT_MS: 10000
-      KAFKA_CONTROLLER_QUORUM_FETCH_TIMEOUT_MS: 10000
-      # Podniesienie krytycznych timeoutów
-      KAFKA_BROKER_SESSION_TIMEOUT_MS: 30000
-      KAFKA_CONTROLLER_QUORUM_REQUEST_TIMEOUT_MS: 15000
-      KAFKA_OFFSETS_COMMIT_TIMEOUT_MS: 15000
-      KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 10000
-      
-      # Warto też podnieść ogólny request timeout (z 30s na 60s)
-      KAFKA_REQUEST_TIMEOUT_MS: 60000
-      
-      # Gdy problem ze startem (rejestracją brokera)
-      KAFKA_INITIAL_BROKER_REGISTRATION_TIMEOUT_MS: 120000
+      KAFKA_CONTROLLER_QUORUM_FETCH_TIMEOUT_MS: 30000
+      KAFKA_CONTROLLER_QUORUM_ELECTION_TIMEOUT_MS: 15000
+      KAFKA_CONNECTION_SETUP_TIMEOUT_MS: 15000
+      KAFKA_SOCKET_CONNECTION_SETUP_TIMEOUT_MS: 15000
+      KAFKA_HEAP_OPTS: "-Xms1G -Xmx1G"
     ports:
       - "9092:9092"
     volumes:
       - kafka_data_1:/var/lib/kafka/data
       - ./shared_workspace:/opt/workspace
+    healthcheck:
+      # Używamy portu INTERNAL (19092), bo test leci z wnętrza kontenera
+      test: ["CMD-SHELL", "kafka-cluster.sh cluster-id --bootstrap-server localhost:19092 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s  # Dajemy Kafce 30s "taryfy ulgowej" na rozruch JVM
 
   kafka-2:
     image: apache/kafka:4.1.1
     container_name: kafka-2
-    profiles: ["kafka"]
+    profiles: ["kafka","spark","flink","all"]
     environment:
       KAFKA_NODE_ID: 2
       KAFKA_PROCESS_ROLES: 'broker,controller'
@@ -54,29 +53,28 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_MIN_IN_SYNC_REPLICAS: 2
-      KAFKA_CONTROLLER_QUORUM_ELECTION_TIMEOUT_MS: 10000
-      KAFKA_CONTROLLER_QUORUM_FETCH_TIMEOUT_MS: 10000
-      # Podniesienie krytycznych timeoutów
-      KAFKA_BROKER_SESSION_TIMEOUT_MS: 30000
-      KAFKA_CONTROLLER_QUORUM_REQUEST_TIMEOUT_MS: 15000
-      KAFKA_OFFSETS_COMMIT_TIMEOUT_MS: 15000
-      KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 10000
-      
-      # Warto też podnieść ogólny request timeout (z 30s na 60s)
-      KAFKA_REQUEST_TIMEOUT_MS: 60000
-      
-      # Gdy problem ze startem (rejestracją brokera)
-      KAFKA_INITIAL_BROKER_REGISTRATION_TIMEOUT_MS: 120000
+      KAFKA_CONTROLLER_QUORUM_FETCH_TIMEOUT_MS: 30000
+      KAFKA_CONTROLLER_QUORUM_ELECTION_TIMEOUT_MS: 15000
+      KAFKA_CONNECTION_SETUP_TIMEOUT_MS: 15000
+      KAFKA_SOCKET_CONNECTION_SETUP_TIMEOUT_MS: 15000
+      KAFKA_HEAP_OPTS: "-Xms1G -Xmx1G"
     ports:
       - "9093:9093"
     volumes:
       - kafka_data_2:/var/lib/kafka/data
       - ./shared_workspace:/opt/workspace
+    healthcheck:
+      # Używamy portu INTERNAL (19092), bo test leci z wnętrza kontenera
+      test: ["CMD-SHELL", "kafka-cluster.sh cluster-id --bootstrap-server localhost:19092 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s  # Dajemy Kafce 30s "taryfy ulgowej" na rozruch JVM
 
   kafka-3:
     image: apache/kafka:4.1.1
     container_name: kafka-3
-    profiles: ["kafka"]
+    profiles: ["kafka","spark","flink","all"]
     environment:
       KAFKA_NODE_ID: 3
       KAFKA_PROCESS_ROLES: 'broker,controller'
@@ -90,32 +88,38 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_MIN_IN_SYNC_REPLICAS: 2
-      KAFKA_CONTROLLER_QUORUM_ELECTION_TIMEOUT_MS: 10000
-      KAFKA_CONTROLLER_QUORUM_FETCH_TIMEOUT_MS: 10000
-      # Podniesienie krytycznych timeoutów
-      KAFKA_BROKER_SESSION_TIMEOUT_MS: 30000
-      KAFKA_CONTROLLER_QUORUM_REQUEST_TIMEOUT_MS: 15000
-      KAFKA_OFFSETS_COMMIT_TIMEOUT_MS: 15000
-      KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 10000
-      
-      # Warto też podnieść ogólny request timeout (z 30s na 60s)
-      KAFKA_REQUEST_TIMEOUT_MS: 60000
-      
-      # Gdy problem ze startem (rejestracją brokera)
-      KAFKA_INITIAL_BROKER_REGISTRATION_TIMEOUT_MS: 120000
+      KAFKA_CONTROLLER_QUORUM_FETCH_TIMEOUT_MS: 30000
+      KAFKA_CONTROLLER_QUORUM_ELECTION_TIMEOUT_MS: 15000
+      KAFKA_CONNECTION_SETUP_TIMEOUT_MS: 15000
+      KAFKA_SOCKET_CONNECTION_SETUP_TIMEOUT_MS: 15000
+      KAFKA_HEAP_OPTS: "-Xms1G -Xmx1G"
     ports:
       - "9094:9094"
     volumes:
       - kafka_data_3:/var/lib/kafka/data
       - ./shared_workspace:/opt/workspace
+    healthcheck:
+      # Używamy portu INTERNAL (19092), bo test leci z wnętrza kontenera
+      test: ["CMD-SHELL", "kafka-cluster.sh cluster-id --bootstrap-server localhost:19092 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s  # Dajemy Kafce 30s "taryfy ulgowej" na rozruch JVM
 
   # --- KAFKA MANAGEMENT UI ---
   kafka-ui:
-    image: provectuslabs/kafka-ui:latest
+    image: provectuslabs/kafka-ui:v0.7.2
     container_name: kafka-ui
     ports:
       - "8085:8080"
-    profiles: ["kafka"]
+    profiles: ["kafka","spark","flink","all"]
+    depends_on:
+      kafka-1:
+        condition: service_healthy
+      kafka-2:
+        condition: service_healthy
+      kafka-3:
+        condition: service_healthy
     environment:
       DYNAMIC_CONFIG_ENABLED: 'true'
       KAFKA_CLUSTERS_0_NAME: 'lab-cluster'
@@ -124,19 +128,23 @@ services:
 
   # --- STREAMING SQL: ksqlDB ---
   ksqldb-server:
-    image: confluentinc/ksqldb-server:latest
+    image: confluentinc/ksqldb-server:0.29.0
     container_name: ksqldb-server
-    profiles: ["kafka"]
+    profiles: ["kafka","all"]
     depends_on:
-      - kafka-1
-      - kafka-2
-      - kafka-3
+      kafka-1:
+        condition: service_healthy
+      kafka-2:
+        condition: service_healthy
+      kafka-3:
+        condition: service_healthy
     ports:
       - "8088:8088"
     environment:
       KSQL_LISTENERS: "http://0.0.0.0:8088"
       KSQL_BOOTSTRAP_SERVERS: "kafka-1:9092,kafka-2:9093,kafka-3:9094"
       KSQL_KSQL_SERVICE_ID: "ksqldb_lab_1"
+      KSQL_KSQL_STREAMS_PRODUCER_RETRIES: 10
       KSQL_KSQL_STREAMS_REPLICATION_FACTOR: 3
       KSQL_KSQL_INTERNAL_TOPIC_REPLICAS: 3
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
@@ -147,11 +155,12 @@ services:
       # Integracja z UI (opcjonalnie)
       KSQL_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
       KSQL_ACCESS_CONTROL_ALLOW_METHODS: "GET,POST,PUT,DELETE,OPTIONS"
+      KSQL_HEAP_OPTS: "-Xms1G -Xmx1G"
 
   ksqldb-cli:
-    image: confluentinc/ksqldb-cli:latest
+    image: confluentinc/ksqldb-cli:0.29.0
     container_name: ksqldb-cli
-    profiles: ["kafka"]
+    profiles: ["kafka","all"]
     depends_on:
       - ksqldb-server
     entrypoint: /bin/sh
@@ -159,8 +168,10 @@ services:
 
   # --- STORAGE: MinIO (S3 API) ---
   minio:
-    image: minio/minio
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
     container_name: minio
+    hostname: minio
+    profiles: ["spark","flink","all"]
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -172,8 +183,9 @@ services:
     command: server /data --console-address ":9001"
 
   minio-init:
-    image: minio/mc
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
     container_name: minio-init
+    profiles: ["spark","flink","kafka","all"]
     depends_on:
       - minio
     entrypoint: >
@@ -190,6 +202,7 @@ services:
     image: mysql:9.5
     container_name: mysql
     hostname: mysql
+    profiles: ["spark","flink","kafka","all"]
     environment:
       MYSQL_ROOT_PASSWORD: jupyter
       MYSQL_DATABASE: lab_db
@@ -212,7 +225,7 @@ services:
       context: .
       dockerfile: Dockerfile.jupyter
     container_name: jupyterlab
-    profiles: ["jupyter"]
+    profiles: ["spark","all"]
     ports:
       - "8888:8888"
     environment:
@@ -234,7 +247,7 @@ services:
       context: .
       dockerfile: Dockerfile.flink
     container_name: flink-jobmanager
-    profiles: ["flink"]
+    profiles: ["flink","all"]
     ports:
       - "8081:8081"
     command: jobmanager
@@ -254,7 +267,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.flink
-    profiles: ["flink"]
+    profiles: ["flink","all"]
     depends_on:
       - flink-jobmanager
     command: taskmanager
@@ -270,20 +283,16 @@ services:
   spark-common:
     build:
       context: .
-      dockerfile: Dockerfile.spark.${SPARK_VERSION}
-    image: spark-image:${SPARK_VERSION}
+      dockerfile: Dockerfile.spark.4.1.1
+    image: spark-image:4.1.1
     container_name: spark-common
     profiles: ["spark"] 
     entrypoint: ["echo", "Service image is ready"] # nie robi nic, tylko kończy działanie
 
-
   spark-master:
-    image: spark-image:${SPARK_VERSION}
+    image: spark-image:4.1.1
     container_name: spark-master
-    profiles: ["spark"]
-    depends_on:
-      spark-common:
-        condition: service_completed_successfully
+    profiles: ["spark","all"]
     ports:
       - "5050:4040"
       - "5051:4041"
@@ -301,8 +310,8 @@ services:
       - PYSPARK_DRIVER_PYTHON=python3         
 
   spark-worker:
-    image: spark-image:${SPARK_VERSION}
-    profiles: ["spark"]
+    image: spark-image:4.1.1
+    profiles: ["spark","all"]
     depends_on:
       spark-master: 
         condition: service_started
@@ -319,9 +328,9 @@ services:
 
   # --- SPARK CONNECT SERVER w trybie Standalone ---
   spark-connect:
-    image: spark-image:${SPARK_VERSION}
+    image: spark-image:4.1.1
     container_name: spark-connect
-    profiles: ["spark"]
+    profiles: ["spark","all"]
     depends_on:
       spark-master: 
         condition: service_started
@@ -336,15 +345,15 @@ services:
       /opt/spark/bin/spark-submit
       --class org.apache.spark.sql.connect.service.SparkConnectServer
       --master spark://spark-master:7077
-      --packages org.apache.spark:spark-sql-kafka-0-10_2.13:${SPARK_VERSION:-4.1.1}
+      --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.1.1
       spark-internal
     volumes:
       - ./conf/spark:/opt/spark/conf    
 
   spark-history-server:
-    image: spark-image:${SPARK_VERSION}
+    image: spark-image:4.1.1
     container_name: spark-history-server
-    profiles: ["spark"]
+    profiles: ["spark","all"]
     depends_on:
       spark-master: 
         condition: service_started

@@ -19,7 +19,8 @@ RUN pip install --no-cache-dir \
     grpcio \
     grpcio-status \
     zstandard \
-    mysql-connector-python
+    mysql-connector-python \
+    delta-spark==4.1.0
 
 # Biblioteki S3/Hadoop-AWS dla Spark 4.x
 # Wersje stabilne, kompatybilne z Hadoop-AWS 3.4.2 i AWS SDK v2  
@@ -27,7 +28,9 @@ RUN pip install --no-cache-dir \
 WORKDIR /opt/spark/jars
 RUN wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.4.2/hadoop-aws-3.4.2.jar && \
     wget https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.29.52/bundle-2.29.52.jar && \
-    wget https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.5.0/mysql-connector-j-9.5.0.jar 
+    wget https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.5.0/mysql-connector-j-9.5.0.jar && \
+    wget https://repo1.maven.org/maven2/io/delta/delta-spark_2.13/4.1.0/delta-spark_2.13-4.1.0.jar && \
+    wget https://repo1.maven.org/maven2/io/delta/delta-storage/4.1.0/delta-storage-4.1.0.jar
 
 RUN chown -R spark:spark /opt/spark && \
     chmod -R 775 /opt/spark
