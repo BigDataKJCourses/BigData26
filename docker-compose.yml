@@ -221,9 +221,7 @@ services:
 
   # --- ANALITYKA (Profil: jupyter) ---
   jupyter:
-    build:
-      context: .
-      dockerfile: Dockerfile.jupyter
+    image: bigdata26-jupyter-image:python-3.10
     container_name: jupyterlab
     profiles: ["spark","all"]
     ports:
@@ -243,9 +241,7 @@ services:
 
   # --- STREAMING: Apache Flink 2.1.1 (Java 21) ---
   flink-jobmanager:
-    build:
-      context: .
-      dockerfile: Dockerfile.flink
+    image: bigdata26-flink-image:2.2.0
     container_name: flink-jobmanager
     profiles: ["flink","all"]
     ports:
@@ -264,9 +260,7 @@ services:
         s3.path.style.access: true
 
   flink-taskmanager:
-    build:
-      context: .
-      dockerfile: Dockerfile.flink
+    image: bigdata26-flink-image:2.2.0
     profiles: ["flink","all"]
     depends_on:
       - flink-jobmanager
@@ -280,17 +274,8 @@ services:
         taskmanager.numberOfTaskSlots: 4
 
   # --- BATCH/STREAMING: Apache Spark ---
-  spark-common:
-    build:
-      context: .
-      dockerfile: Dockerfile.spark.4.1.1
-    image: spark-image:4.1.1
-    container_name: spark-common
-    profiles: ["spark"] 
-    entrypoint: ["echo", "Service image is ready"] # nie robi nic, tylko kończy działanie
-
   spark-master:
-    image: spark-image:4.1.1
+    image: bigdata26-spark-image:4.1.1
     container_name: spark-master
     profiles: ["spark","all"]
     ports:
@@ -310,7 +295,7 @@ services:
       - PYSPARK_DRIVER_PYTHON=python3         
 
   spark-worker:
-    image: spark-image:4.1.1
+    image: bigdata26-spark-image:4.1.1
     profiles: ["spark","all"]
     depends_on:
       spark-master: 
@@ -328,7 +313,7 @@ services:
 
   # --- SPARK CONNECT SERVER w trybie Standalone ---
   spark-connect:
-    image: spark-image:4.1.1
+    image: bigdata26-spark-image:4.1.1
     container_name: spark-connect
     profiles: ["spark","all"]
     depends_on:
@@ -351,7 +336,7 @@ services:
       - ./conf/spark:/opt/spark/conf    
 
   spark-history-server:
-    image: spark-image:4.1.1
+    image: bigdata26-spark-image:4.1.1
     container_name: spark-history-server
     profiles: ["spark","all"]
     depends_on:
