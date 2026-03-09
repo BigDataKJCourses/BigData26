@@ -224,6 +224,9 @@ services:
     image: bigdata26-jupyter-image:python-3.10
     container_name: jupyterlab
     profiles: ["spark","all"]
+    depends_on:
+      spark-master: 
+        condition: service_started
     ports:
       - "8888:8888"
     environment:
