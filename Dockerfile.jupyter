@@ -12,8 +12,8 @@ RUN apt-get update && apt-get install -y curl tar && \
 ENV JAVA_HOME=/opt/java/openjdk
 ENV PATH=$JAVA_HOME/bin:$PATH
 
-# 2. Instalacja Spark 4.0.1
-ENV SPARK_VERSION=4.0.1
+# 2. Instalacja Spark 4.1.1
+ENV SPARK_VERSION=4.1.1
 RUN wget https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop3.tgz && \
     tar -xvzf spark-${SPARK_VERSION}-bin-hadoop3.tgz -C /opt && \
     mv /opt/spark-${SPARK_VERSION}-bin-hadoop3 /opt/spark && \
@@ -25,12 +25,12 @@ ENV PATH=$PATH:$SPARK_HOME/bin
 # 3. Instalacja bibliotek Pythonowych
 RUN pip install --no-cache-dir \
 #    apache-flink==2.2.0 \
-    pyspark==4.0.1 \
+    pyspark==4.1.1 \
     kafka-python-ng \
     requests \
     boto3 \
     matplotlib \
-    delta-spark==4.0.1
+    delta-spark==4.1.0
 
 RUN mkdir -p /opt/conda/lib/python3.10/site-packages/pyflink/log && \
     chown -R jovyan:users /opt/conda/lib/python3.10/site-packages/pyflink/log
@@ -39,11 +39,11 @@ RUN mkdir -p /opt/conda/lib/python3.10/site-packages/pyflink/log && \
 # Wersje stabilne, kompatybilne z Hadoop-AWS 3.4.2 i AWS SDK v2 (3.4.2 użyć dla 4.1.1) 
 # Delta Lake
 WORKDIR /opt/spark/jars
-RUN wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.4.1/hadoop-aws-3.4.1.jar && \
-    wget https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.25.53/bundle-2.25.53.jar && \
+RUN wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.4.2/hadoop-aws-3.4.2.jar && \
+    wget https://repo1.maven.org/maven2/software/amazon/awssdk/bundle/2.29.52/bundle-2.29.52.jar && \
     wget https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.5.0/mysql-connector-j-9.5.0.jar && \
-    wget https://repo1.maven.org/maven2/io/delta/delta-spark_2.13/4.0.1/delta-spark_2.13-4.0.1.jar && \
-    wget https://repo1.maven.org/maven2/io/delta/delta-storage/4.0.1/delta-storage-4.0.1.jar
+    wget https://repo1.maven.org/maven2/io/delta/delta-spark_2.13/4.1.0/delta-spark_2.13-4.1.0.jar && \
+    wget https://repo1.maven.org/maven2/io/delta/delta-storage/4.1.0/delta-storage-4.1.0.jar
 
 WORKDIR /home/jovyan/work
 USER jovyan
