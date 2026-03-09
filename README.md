@@ -49,13 +49,7 @@ git clone https://github.com/BigDataKJCourses/BigData26.git
 cd BigData26
 ```
 
-### 2. Setting Apache Spark version
-
-Edit `.env` file and set right Apache Spark version (`4.0.1` or `4.1.1`)
-
-Note: `4.0.1` can use Delta Lake library
-
-### 3. Create additional folders
+### 2. Create additional folders
 
 Create additional folders used by Docker volumes within the `BigData26` directory.
 
@@ -65,7 +59,7 @@ mkdir lib-shared
 mkdir shared_workspace
 ```
 
-### 4. Start *BigData26*
+### 3. Start *BigData26*
 
 Start your cluster
 ```sh
@@ -87,7 +81,7 @@ docker compose ps --format "table {{.Name}}\t{{.Service}}\t{{.Status}}\t{{.State
     <img src="img/image002.png" width="500">
 </div>
 
-### 5. Post-launch configuration
+### 4. Post-launch configuration
 
 #### Edit `hosts`
 
