@@ -26,6 +26,11 @@ ENV PATH=$PATH:$SPARK_HOME/bin
 RUN pip install --no-cache-dir \
 #    apache-flink==2.2.0 \
     pyspark==4.1.1 \
+    pandas \
+    pyarrow \
+    grpcio \
+    grpcio-status \
+    zstandard \
     kafka-python-ng \
     requests \
     boto3 \
