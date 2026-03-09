@@ -31,6 +31,7 @@ RUN pip install --no-cache-dir \
     grpcio \
     grpcio-status \
     zstandard \
+    mysql-connector-python \
     kafka-python-ng \
     requests \
     boto3 \
