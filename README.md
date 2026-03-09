@@ -69,8 +69,7 @@ mkdir shared_workspace
 
 Start your cluster
 ```sh
-docker compose --profile jupyter --profile flink --profile spark --profile kafka \
-up -d --scale flink-taskmanager=2 --scale spark-worker=2 
+docker compose --profile all up -d --scale flink-taskmanager=2 --scale spark-worker=2 
 ```
 
 <div align="center">
@@ -123,7 +122,7 @@ Install `mc` - *MinIO client*
 wget https://dl.min.io/client/mc/release/linux-amd64/mc
 chmod +x mc
 sudo mv mc /usr/local/bin/mc
-mc alias set local https://localhost:9000 admin password
+mc alias set local http://localhost:9000 admin password
 ```
 
 ---
@@ -148,7 +147,7 @@ You can close the environment in several ways, but two are the most important de
 The `stop` command shuts down all containers but preserves their internal state and data. You can later resume exactly where you left off using `docker compose start`.
 
 ```bash
-docker compose --profile jupyter --profile flink --profile spark --profile kafka stop
+docker compose --profile all stop
 ```
 
 <div align="center">
@@ -162,7 +161,7 @@ The `down -v` command removes the containers along with all their volumes (datab
 *Note: Only the `shared_workspace` directory on your physical disk and corresponding docker volumes remains unchanged.*
 
 ```bash
-docker compose --profile jupyter --profile flink --profile spark --profile kafka down -v
+docker compose --profile all down -v
 ```
 
 <div align="center">

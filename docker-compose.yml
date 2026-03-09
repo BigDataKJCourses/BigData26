@@ -30,7 +30,7 @@ services:
       - ./shared_workspace:/opt/workspace
     healthcheck:
       # Używamy portu INTERNAL (19092), bo test leci z wnętrza kontenera
-      test: ["CMD-SHELL", "kafka-cluster.sh cluster-id --bootstrap-server localhost:19092 || exit 1"]
+      test: ["CMD", "nc", "-z", "localhost", "19092"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -65,7 +65,7 @@ services:
       - ./shared_workspace:/opt/workspace
     healthcheck:
       # Używamy portu INTERNAL (19092), bo test leci z wnętrza kontenera
-      test: ["CMD-SHELL", "kafka-cluster.sh cluster-id --bootstrap-server localhost:19092 || exit 1"]
+      test: ["CMD", "nc", "-z", "localhost", "19092"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -100,7 +100,7 @@ services:
       - ./shared_workspace:/opt/workspace
     healthcheck:
       # Używamy portu INTERNAL (19092), bo test leci z wnętrza kontenera
-      test: ["CMD-SHELL", "kafka-cluster.sh cluster-id --bootstrap-server localhost:19092 || exit 1"]
+      test: ["CMD", "nc", "-z", "localhost", "19092"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -185,7 +185,7 @@ services:
   minio-init:
     image: minio/mc:RELEASE.2025-08-13T08-35-41Z
     container_name: minio-init
-    profiles: ["spark","flink","kafka","all"]
+    profiles: ["spark","flink","all"]
     depends_on:
       - minio
     entrypoint: >
@@ -204,7 +204,7 @@ services:
     hostname: mysql
     profiles: ["spark","flink","kafka","all"]
     environment:
-      MYSQL_ROOT_PASSWORD: jupyter
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: lab_db
     command: >
       --lower_case_table_names=1
@@ -244,6 +244,13 @@ services:
     image: bigdata26-flink-image:2.2.0
     container_name: flink-jobmanager
     profiles: ["flink","all"]
+    depends_on:
+      kafka-1:
+        condition: service_healthy
+      kafka-2:
+        condition: service_healthy
+      kafka-3:
+        condition: service_healthy
     ports:
       - "8081:8081"
     command: jobmanager
@@ -278,6 +285,13 @@ services:
     image: bigdata26-spark-image:4.1.1
     container_name: spark-master
     profiles: ["spark","all"]
+    depends_on:
+      kafka-1:
+        condition: service_healthy
+      kafka-2:
+        condition: service_healthy
+      kafka-3:
+        condition: service_healthy
     ports:
       - "5050:4040"
       - "5051:4041"

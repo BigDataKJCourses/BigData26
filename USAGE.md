@@ -252,7 +252,7 @@ docker exec -it spark-master /opt/spark/bin/spark-submit \
     Check if the resulting data has reached its destination using the terminal:
 
 ```bash
-mc ls local/lake-zone/technologie.parquet
+mc ls local/lake-zone/technologies.parquet
 ```
 
 <div align="center">
@@ -427,14 +427,7 @@ The final component of our stack is *JupyterLab*, which serves as our interactiv
     * **Password:** `password`
 
 41. **Set Up Your Notebook:**
-    Create a new Python notebook and add the following cells to prepare your environment:
-
-* **Install Required Libraries:**
-Run this cell to install the necessary visualization and data manipulation tools:
-
-```python
-%pip install matplotlib pandas
-```
+    Create a new Python notebook
 
 * **Verify Installation:** You can check if the libraries are ready by importing them:
 
