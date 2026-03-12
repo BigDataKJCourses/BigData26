@@ -44,12 +44,22 @@ This guide shows how to deploy the *BigData26* environment using Docker Compose.
 ### 1. Clone the repository
 
 To deploy the cluster, run:
+
 ```sh
 git clone https://github.com/BigDataKJCourses/BigData26.git
 cd BigData26
 ```
 
-### 2. Create additional folders
+### 2. Build images
+
+To create docker images, run:
+
+```sh
+chmod +x build.sh
+./build.sh
+```
+
+### 3. Create additional folders
 
 Create additional folders used by Docker volumes within the `BigData26` directory.
 
@@ -59,7 +69,7 @@ mkdir lib-shared
 mkdir shared_workspace
 ```
 
-### 3. Start *BigData26*
+### 4. Start *BigData26*
 
 Start your cluster
 ```sh
@@ -81,7 +91,7 @@ docker compose ps --format "table {{.Name}}\t{{.Service}}\t{{.Status}}\t{{.State
     <img src="img/image002.png" width="500">
 </div>
 
-### 4. Post-launch configuration
+### 5. Post-launch configuration
 
 #### Edit `hosts`
 
