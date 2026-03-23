@@ -1,7 +1,5 @@
 # Utworzenie maszyny wirtualnej na GCP
 
-Przed poniższą procedurą pozostałe środki: **53,51$**. Po zakończeniu konfiguracji pozostało: **52,88$**
-
 1. Otwórz konsolę platformy GCP https://console.cloud.google.com/ 
 
 2. Otwórz *Cloud Shell*
@@ -137,3 +135,76 @@ screen -r # powrót do sesji pobierania w razie gdyby w miedzyczasie sesja SSH z
 - usunąć maszynę 
 
 > Ma to sens jedynie, kiedy nie zamierzamy korzystać z tej maszyny przez miesiąc lub dłużej
+
+# Koszty
+
+- Przed powyższą procedurą pozostałe środki: **53,51$**. 
+- Po zakończeniu konfiguracji pozostało: **52,88$**. 
+- Po kolejnym dniu pozostało **52,22$** (koszt zatrzymanej maszyny i snapshota)
+- Po jeszcze jednym (koszt dysku i snapshota) **51,53$**
+* Mając utworzony snapshot można skasować dysk
+
+# Dodatek 
+
+Wirtualna Maszyna na GCP może zawierać całość środowiska BigData26, a nie tylko jego *dockerowe serce*. 
+
+W tym celu należy zainstalować na niej usługi pozwalające podłączyć się za pomocą RDP (*Remote Desktop*) 
+
+1. Instalacja lekkiego środowiska graficznego (XFCE)
+
+Zamiast ciężkiego GNOME, zainstalujemy XFCE. Jest szybkie, stabilne i idealne do pracy zdalnej.
+
+Połącz się przez SSH i wpisz:
+
+```sh
+sudo apt update
+sudo apt install xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils -y
+```
+
+2. Instalacja i konfiguracja serwera XRDP
+
+XRDP to usługa, która pozwoli Ci połączyć się z Linuxem za pomocą windowsowego "Podłączania pulpitu zdalnego".
+
+```sh
+sudo apt install xrdp -y
+
+# Dodaj użytkownika xrdp do grupy ssl-cert (rozwiązuje problemy z uprawnieniami)
+sudo adduser xrdp ssl-cert
+
+# Uruchom i włącz usługę
+sudo systemctl enable xrdp
+sudo systemctl start xrdp
+```
+
+3. Ustawienie hasła dla Twojego użytkownika
+
+Konta na GCP tworzone przez gcloud zazwyczaj logują się przez klucze SSH i nie mają ustawionego hasła. RDP wymaga tradycyjnego hasła.
+
+Wpisz (zastąp `kjankiewicz` swoją nazwą użytkownika):
+
+```sh
+sudo passwd kjankiewicz
+```
+
+4. Łączymy się przez Putty i tworzmy tunel
+
+Łączymy się przez PuTTY i ustawiamy tunel 3390 -> localhost:3389
+
+W sesji PuTTY
+```sh
+# Utworzenie pliku konfiguracyjnego sesji dla Twojego użytkownika
+echo "xfce4-session" > ~/.xsession
+
+# Nadanie uprawnień do wykonywania (opcjonalnie, ale warto)
+chmod +x ~/.xsession
+
+# Restart usługi 
+sudo systemctl restart xrdp
+```
+
+5. Łączymy się przez RDP
+
+Warto zainstalować oprogramowanie, z którego będziemy korzystali 
+- IntelliJ IDEA (for Java/Scala development)
+- PyCharm (for Python/Spark scripts)
+- DBeaver (for MySQL and ksqlDB data exploration)
