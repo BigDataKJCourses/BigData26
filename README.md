@@ -123,10 +123,9 @@ The *BigData26* environment is pre-configured for Docker, but for full developme
 Install `mc` - *MinIO client*
 
 ```sh
-wget https://dl.min.io/client/mc/release/linux-amd64/mc
-chmod +x mc
-sudo mv mc /usr/local/bin/mc
-mc alias set local http://localhost:9000 admin password
+echo "alias mc='docker run --rm -it --network stream-net -v \$PWD:/work -w /work -e MC_HOST_local=http://admin:password@minio:9000 minio/mc:RELEASE.2025-08-13T08-35-41Z'" >> ~/.bashrc
+source ~/.bashrc
+mc ls local
 ```
 
 ---
