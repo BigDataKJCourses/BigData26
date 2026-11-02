@@ -24,9 +24,8 @@ RUN ln -sf /usr/bin/python3 /usr/bin/python
 # PyFlink w tej samej wersji co klaster - bez fallbacku (niezgodna wersja ma przerwać build)
 RUN pip3 install --no-cache-dir apache-flink==2.3.0 --break-system-packages
 
-# MinIO Client
-RUN curl -sSL https://dl.min.io/client/mc/release/linux-amd64/mc -o /usr/local/bin/mc && \
-    chmod +x /usr/local/bin/mc
+# MinIO Client (z przypiętego obrazu - dl.min.io nie udostępnia już binariów)
+COPY --from=minio/mc:RELEASE.2025-08-13T08-35-41Z /usr/bin/mc /usr/local/bin/mc
 
 # --- S3 Support ---
 RUN mkdir -p /opt/flink/plugins/s3-fs-presto && \
@@ -42,9 +41,9 @@ RUN wget https://repo1.maven.org/maven2/org/apache/flink/flink-sql-connector-kaf
 RUN wget https://github.com/knaufk/flink-faker/releases/download/v0.5.3/flink-faker-0.5.3.jar && \
     wget https://repo1.maven.org/maven2/net/datafaker/datafaker/1.9.0/datafaker-1.9.0.jar
 
-# JDBC i MySQL
-RUN wget https://repo1.maven.org/maven2/org/apache/flink/flink-connector-jdbc-core/4.1.0-2.2/flink-connector-jdbc-core-4.1.0-2.2.jar && \
-    wget https://repo1.maven.org/maven2/org/apache/flink/flink-connector-jdbc-mysql/4.1.0-2.2/flink-connector-jdbc-mysql-4.1.0-2.2.jar && \
+# JDBC i MySQL (4.0.0-2.0: wersja 4.1.0-2.2 wymaga bibliotek OpenLineage, których brak)
+RUN wget https://repo1.maven.org/maven2/org/apache/flink/flink-connector-jdbc-core/4.0.0-2.0/flink-connector-jdbc-core-4.0.0-2.0.jar && \
+    wget https://repo1.maven.org/maven2/org/apache/flink/flink-connector-jdbc-mysql/4.0.0-2.0/flink-connector-jdbc-mysql-4.0.0-2.0.jar && \
     wget https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/9.5.0/mysql-connector-j-9.5.0.jar
 
 # Kafka Connector i Klient oraz GSON
