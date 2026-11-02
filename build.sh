@@ -11,8 +11,8 @@ echo "Building Spark image (4.1.1)..."
 docker build -t bigdata26-spark-image:4.1.1 -f Dockerfile.spark .
 
 # Building Flink Image
-echo "Building Flink image (2.2.0)..."
-docker build -t bigdata26-flink-image:2.2.0 -f Dockerfile.flink .
+echo "Building Flink image (2.3.0)..."
+docker build -t bigdata26-flink-image:2.3.0 -f Dockerfile.flink .
 
 # Building Jupyter Image
 echo "Building Jupyter image (Python 3.10)..."

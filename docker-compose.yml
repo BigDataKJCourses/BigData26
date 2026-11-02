@@ -242,9 +242,9 @@ services:
       - ./lib-shared:/home/jovyan/lib-shared
       - ./conf/spark:/opt/spark/conf
 
-  # --- STREAMING: Apache Flink 2.1.1 (Java 21) ---
+  # --- STREAMING: Apache Flink 2.3.0 (Java 21) ---
   flink-jobmanager:
-    image: bigdata26-flink-image:2.2.0
+    image: bigdata26-flink-image:2.3.0
     container_name: flink-jobmanager
     profiles: ["flink","all"]
     depends_on:
@@ -270,7 +270,7 @@ services:
         s3.path.style.access: true
 
   flink-taskmanager:
-    image: bigdata26-flink-image:2.2.0
+    image: bigdata26-flink-image:2.3.0
     profiles: ["flink","all"]
     depends_on:
       - flink-jobmanager

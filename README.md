@@ -13,7 +13,7 @@ Do not use in a production environment
 * [MinIO](https://github.com/minio/)
 * [MySQL 9.5](https://www.mysql.com/)
 * [Jupyter](https://jupyter.org/)
-* [Apache Flink 2.2.0](https://flink.apache.org/)
+* [Apache Flink 2.3.0](https://flink.apache.org/)
 * [Apache Spark 4.0.1 or 4.1.1](https://spark.apache.org/)
 
 ## Intro
