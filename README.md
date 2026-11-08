@@ -123,7 +123,7 @@ The *BigData26* environment is pre-configured for Docker, but for full developme
 Install `mc` - *MinIO client*
 
 ```sh
-echo "alias mc='docker run --rm -it --network stream-net -v \$PWD:/work -w /work -e MC_HOST_local=http://admin:password@minio:9000 minio/mc:RELEASE.2025-08-13T08-35-41Z'" >> ~/.bashrc
+echo "alias mc='docker run --rm -it --network stream-net -v \$PWD:/work -w /work --entrypoint mc -e MC_HOST_local=http://admin:password@minio:9000 pgsty/minio:RELEASE.2026-08-04T00-00-00Z'" >> ~/.bashrc
 source ~/.bashrc
 mc ls local
 ```

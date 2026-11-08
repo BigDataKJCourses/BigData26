@@ -24,8 +24,9 @@ RUN ln -sf /usr/bin/python3 /usr/bin/python
 # PyFlink w tej samej wersji co klaster - bez fallbacku (niezgodna wersja ma przerwać build)
 RUN pip3 install --no-cache-dir apache-flink==2.3.0 --break-system-packages
 
-# MinIO Client (z przypiętego obrazu - dl.min.io nie udostępnia już binariów)
-COPY --from=minio/mc:RELEASE.2025-08-13T08-35-41Z /usr/bin/mc /usr/local/bin/mc
+# MinIO Client ze społecznościowego obrazu pgsty/minio (oficjalne obrazy MinIO nie są już publicznie dostępne;
+# w tym obrazie mc to dowiązanie do mcli, dlatego kopiujemy mcli)
+COPY --from=pgsty/minio:RELEASE.2026-08-04T00-00-00Z /usr/bin/mcli /usr/local/bin/mc
 
 # --- S3 Support ---
 RUN mkdir -p /opt/flink/plugins/s3-fs-presto && \

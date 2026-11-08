@@ -168,7 +168,7 @@ services:
 
   # --- STORAGE: MinIO (S3 API) ---
   minio:
-    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    image: pgsty/minio:RELEASE.2026-08-04T00-00-00Z
     container_name: minio
     hostname: minio
     profiles: ["spark","flink","all"]
@@ -183,7 +183,7 @@ services:
     command: server /data --console-address ":9001"
 
   minio-init:
-    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+    image: pgsty/minio:RELEASE.2026-08-04T00-00-00Z
     container_name: minio-init
     profiles: ["spark","flink","all"]
     depends_on:
@@ -282,6 +282,10 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: flink-jobmanager
         taskmanager.numberOfTaskSlots: 4
+        s3.endpoint: http://minio:9000
+        s3.access-key: admin
+        s3.secret-key: password
+        s3.path.style.access: true
 
   # --- BATCH/STREAMING: Apache Spark ---
   spark-master:
